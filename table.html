@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!-- <script src="raphael.js"></script> -->
+    <script src="libraries/jquery-3.3.1.js"></script>
+    <script>
+      window.onload = function () {
+       displayOperation(3,2, "x", 6);
+      
+      }
+      
+      var displayOperation = function(x, y, operator, result)
+      {
+      $("#operand_x").html(x);
+      $("#operand_y").text(y);
+      $("#operator").text(operator);
+      $("#result").text(result);
+      }
+
+      var updateResult = function(result, isOperand) {
+        if (isOperand) {
+          $("#operand_y").text(result);
+        } else {
+          $("#result").text(result);
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="operand_x"></div>
+    <div id="operator"></div>
+    <div id="operand_y"></div>
+    <div>=</div>
+    <div id="result"></div>
+  </body>
+</html>
