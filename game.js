@@ -79,20 +79,20 @@ function Game(context) {
 
 
     this.start = function () {
-        this.loop();
+       this.loop();
     }
 
     this.loop = function (item) {
-        if (this.currentTimeout !== null) {
-            console.log("Clearing timeout")
-            window.clearTimeout(this.currentTimeout);
-            this.currentTimeout = null;
-        }
         var item = this.items.pop();
         if (item !== undefined) {
-            this.fireNewItem(item);
-            this.currentTimeout = window.setTimeout(this.fireTimeout(this), 5000);
-            console.log("Setting timeout for " + item + " to 5000 ms");
+            this.fireNewItem(item, this);
+            if (this.currentTimeout !== null) {
+                console.log("Clearing timeout")
+                window.clearTimeout(this.currentTimeout);
+                this.currentTimeout = null;
+            }
+            this.currentTimeout = window.setTimeout(this.fireTimeout, 5000, this);
+            console.log("Setting timeout for " + item + " to 1000 ms");
         } else {
             this.fireEndOfGame(this);
         }
@@ -101,7 +101,7 @@ function Game(context) {
     this.fireNewItem = function (item, thisObj) {
         var scope = thisObj || window;
         var operator = this.operator.toString();
-        this.handlers.forEach(function (handler) {
+        scope.handlers.forEach(function (handler) {
             if (handler.newItem !== undefined) {
                 handler.newItem.call(scope, item, operator);
             }
@@ -109,7 +109,8 @@ function Game(context) {
     }
 
     this.fireTimeout = function (thisObj) {
-        this.handlers.forEach(function (handler) {
+        var scope = thisObj || window.top;
+        scope.handlers.forEach(function (handler) {
             var scope = thisObj || window;
             if (handler.hasTimedOut !== undefined) {
                 handler.hasTimedOut.call(scope);
@@ -118,11 +119,12 @@ function Game(context) {
         });
         // TODO notify handles that timeout has reached
         // TODO notify game that this item is failed
-        this.loop();
+        scope.loop();
     }
 
     this.fireEndOfGame = function(thisObj) {
-        this.handlers.forEach(function (handler) {
+        var scope = thisObj || window.top;
+        scope.handlers.forEach(function (handler) {
             var scope = thisObj || window;
             if (handler.endOfGame !== undefined) {
                 handler.endOfGame.call(scope);
