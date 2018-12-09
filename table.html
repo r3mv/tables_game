@@ -12,12 +12,20 @@
         var consoleHandler = {
           newItem : function(item, operator) {
             console.log(item.x + ' ' + operator + ' ' + item.y);
+          },
+          hasTimedOut : function() {
+            console.log("Timeout reached");
+          },
+          endOfGame : function() {
+            alert("Fin");
           }
         }
 
        displayOperation(3,2, "x", 6);
 
-       var theGame = new game();
+       var context = undefined;
+       var theGame = new Game(context);
+     //  var theGame = game.newGame(context);
        theGame.addHandler(consoleHandler);
        theGame.start();
       
