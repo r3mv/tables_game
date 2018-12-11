@@ -3,16 +3,28 @@ function Game(context) {
     this.Levels = Object.freeze({ "beginner": 1, "medium": 2, "expert": 3, "computer": 4 });
     this.Operators = Object.freeze({
         addition: {
-            toString: "+"
+            toString: "+",
+            apply : function(x, y) {
+                return x + y;
+            }
         },
         substraction: {
-            toString: "-"
+            toString: "-",
+            apply : function(x, y) {
+                return x - y;
+            }
         },
         multiplication: {
-            toString: "x"
+            toString: "x",
+            apply : function(x, y) {
+                return x*y;
+            }
         },
         division: {
-            toString: "/"
+            toString: "/",
+            apply : function(x,y) {
+                return x/y;
+            }
         }
     }
     );
@@ -61,7 +73,7 @@ function Game(context) {
     * handler must implement:
     * newItem: (item { x : val, y : val}, operator) -> call when a new operation is submitted to the game
     * hasTimedOut: function called when timeout is reached for giving an answer
-    * endofgame: function calld when the game is finished
+    * endofgame: function called when the game is finished
     */
     this.addHandler = function (guiHandler) {
         this.handlers.push(guiHandler);
