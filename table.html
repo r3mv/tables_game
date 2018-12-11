@@ -8,7 +8,7 @@
     <script src="game.js"></script>
     <script>
       window.onload = function () {
-        
+
         var consoleHandler = {
           newItem : function(item, operator) {
             console.log(item.x + ' ' + operator + ' ' + item.y);
@@ -21,12 +21,19 @@
           }
         }
 
+        var htmlHandler = {
+          newItem : function(item, operator) {
+            displayOperation(item.x, item.y, operator, item.x*item.y);
+          }
+        }
+
        displayOperation(3,2, "x", 6);
 
        var context = undefined;
        var theGame = new Game(context);
      //  var theGame = game.newGame(context);
        theGame.addHandler(consoleHandler);
+       theGame.addHandler(htmlHandler);
        theGame.start();
       
       }

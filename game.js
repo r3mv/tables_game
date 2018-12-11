@@ -1,3 +1,12 @@
+/**
+ * 
+ * @param {
+ * operator : the operator,
+ * tables : [ list of tables to study]
+ * max : int, tables up to max
+ * level : game level} context 
+ */
+
 function Game(context) {
 
     this.Levels = Object.freeze({ "beginner": 1, "medium": 2, "expert": 3, "computer": 4 });
@@ -40,6 +49,10 @@ function Game(context) {
     ];
     this.currentTimeout = null;
 
+    if (context !== undefined) {
+        this.init(context);
+    }
+
     this.setOperator = function (operator) {
         this.operator = operator;
     }
@@ -57,7 +70,8 @@ function Game(context) {
         this.tables = tables;
     }
 
-    this.init = function () {
+    this.init = function (context) {
+
         switch (game.level) {
             case 1:
             case 2:
