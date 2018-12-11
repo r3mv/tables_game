@@ -2,16 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <!-- <script src="raphael.js"></script> -->
-    <!-- <script src="libraries/jquery-3.3.1.js"></script> -->
+    <script src="raphael/raphael.js"></script>
+    <!-- <script src="lib/raphael.min.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="game.js"></script>
+    <script src="gui.js"></script>
     <script>
       window.onload = function () {
 
+        var paper = Raphael(0,0,100,100);
+        var font = paper.getFont("Times");
+
+       var guiHandler = new Gui("raphael_gui_operation");
+
         var consoleHandler = {
           newItem : function(item, operator) {
-            console.log(item.x + ' ' + operator + ' ' + item.y);
+            console.log(item.x + ' ' + operator.displayString + ' ' + item.y);
           },
           hasTimedOut : function() {
             console.log("Timeout reached");
@@ -23,17 +29,16 @@
 
         var htmlHandler = {
           newItem : function(item, operator) {
-            displayOperation(item.x, item.y, operator, item.x*item.y);
+            displayOperation(item.x, item.y, operator.displayString, operator.apply(item.x, item.y));
           }
         }
 
-       displayOperation(3,2, "x", 6);
-
+     
        var context = undefined;
        var theGame = new Game(context);
-     //  var theGame = game.newGame(context);
        theGame.addHandler(consoleHandler);
-       theGame.addHandler(htmlHandler);
+      //  theGame.addHandler(htmlHandler);
+       theGame.addHandler(guiHandler);
        theGame.start();
       
       }
@@ -42,7 +47,7 @@
       {
       $("#operand_x").html(x);
       $("#operand_y").text(y);
-      $("#operator").text(operator);
+      $("#operator").text(operator.displayString);
       $("#result").text(result);
       }
 
@@ -57,6 +62,8 @@
   </head>
 
   <body>
+    <div id="raphael_gui_operation"></div>
+    <hr>
     <div id="operand_x"></div>
     <div id="operator"></div>
     <div id="operand_y"></div>

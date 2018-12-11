@@ -12,25 +12,25 @@ function Game(context) {
     this.Levels = Object.freeze({ "beginner": 1, "medium": 2, "expert": 3, "computer": 4 });
     this.Operators = Object.freeze({
         addition: {
-            toString: "+",
+            displayString: "+",
             apply : function(x, y) {
                 return x + y;
             }
         },
         substraction: {
-            toString: "-",
+            displayString: "-",
             apply : function(x, y) {
                 return x - y;
             }
         },
         multiplication: {
-            toString: "x",
+            displayString: "x",
             apply : function(x, y) {
                 return x*y;
             }
         },
         division: {
-            toString: "/",
+            displayString: "/",
             apply : function(x,y) {
                 return x/y;
             }
@@ -39,7 +39,7 @@ function Game(context) {
     );
 
     this.tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    this.operator = "x";
+    this.operator = this.Operators.multiplication;
     this.max = 10;
     this.level = this.Levels.beginner;
     this.responseDelay_ms = 1000;
@@ -126,10 +126,9 @@ function Game(context) {
 
     this.fireNewItem = function (item, thisObj) {
         var scope = thisObj || window;
-        var operator = this.operator.toString();
         scope.handlers.forEach(function (handler) {
             if (handler.newItem !== undefined) {
-                handler.newItem.call(scope, item, operator);
+                handler.newItem.call(handler, item, thisObj.operator);
             }
         });
     }
