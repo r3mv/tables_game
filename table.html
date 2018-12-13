@@ -24,50 +24,45 @@
           },
           endOfGame : function() {
             alert("Fin");
-          }
-        }
+          },
 
-        var htmlHandler = {
-          newItem : function(item, operator) {
-            displayOperation(item.x, item.y, operator.displayString, operator.apply(item.x, item.y));
+          correctAnswer : function() {
+            console.log("Correct!");
+          },
+
+          wrongAnswer : function() {
+            console.log("Wrong!");
           }
+
         }
 
      
        var context = undefined;
-       var theGame = new Game(context);
+       var level = Game.Levels.beginner;
+       var theGame = new Game(level);
        theGame.addHandler(consoleHandler);
-      //  theGame.addHandler(htmlHandler);
        theGame.addHandler(guiHandler);
        theGame.start();
-      
-      }
-      
-      var displayOperation = function(x, y, operator, result)
-      {
-      $("#operand_x").html(x);
-      $("#operand_y").text(y);
-      $("#operator").text(operator.displayString);
-      $("#result").text(result);
-      }
 
-      var updateResult = function(result, isOperand) {
-        if (isOperand) {
-          $("#operand_y").text(result);
-        } else {
-          $("#result").text(result);
-        }
+       var submitFunction = function() {
+         
+         var ans = $("#answer").text();
+         theGame.submitAnswer(ans);
+       }
+
+
+      
       }
+      
+    
     </script>
   </head>
 
   <body>
     <div id="raphael_gui_operation"></div>
-    <hr>
-    <div id="operand_x"></div>
-    <div id="operator"></div>
-    <div id="operand_y"></div>
-    <div>=</div>
-    <div id="result"></div>
+    <form action="javascript:void(0);" submit="submitFunction()">
+      <input name="answer" type="text" id="answer">
+      <input type="submit" value="Submit">
+    </form>
   </body>
 </html>
