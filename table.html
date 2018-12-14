@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <!-- <script src="raphael/raphael.js"></script> -->
-    <script src="raphael.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="game.js"></script>
-    <script src="gui.js"></script>
-    <script>
 
-   
-      // window.onload = function () {
-       var guiHandler = new Gui("raphael_gui_operation");
-        var consoleHandler = {
-          newItem : function(item, operator) {
-            console.log(item.x + ' ' + operator.displayString + ' ' + item.y);
-          },
-          hasTimedOut : function() {
-            console.log("Timeout reached");
-          },
-          endOfGame : function() {
-            alert("Fin");
-          },
+<head>
+  <meta charset="utf-8">
+  <!-- <script src="raphael/raphael.js"></script> -->
+  <script src="raphael.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="game.js"></script>
+  <script src="gui.js"></script>
+  <script>
 
-          correctAnswer : function() {
-            console.log("Correct!");
-          },
-
-          wrongAnswer : function() {
-            console.log("Wrong!");
-          }
-
-        }
-       var context = undefined;
-       var level = Game.Levels.beginner;
-       var theGame = new Game(level);
-       theGame.addHandler(consoleHandler);
-       theGame.addHandler(guiHandler);
-       theGame.start();
-
-       var submitFunction = function() {
-         var ans = $("#answer").text();
-         console.log('SUBMIT FUNCTION');
-         theGame.submitAnswer(ans);
-         return false;
+    var context = undefined;
+    var level = Game.Levels.beginner;
+    var theGame = new Game(level);
+    var submitFunction = function () {
+      var ans = parseInt($("#answer").val(),10);
+      console.log('SUBMIT FUNCTION');
+      theGame.submitAnswer(ans);
+      return false;
     }
-      // }
-      
-    
-    </script>
-  </head>
 
-  <body>
-    <div id="raphael_gui_operation"></div>
-    <form action="javascript:void(0);" onSubmit="return submitFunction()">
-      <input name="answer" type="text" id="answer">
-      <input type="submit" value="Submit">
-    </form>
-  </body>
+
+    window.onload = function () {
+      var guiHandler = new Gui("raphael_gui_operation");
+      var consoleHandler = {
+        newItem: function (item, operator) {
+          console.log(item.x + ' ' + operator.displayString + ' ' + item.y);
+        },
+        hasTimedOut: function () {
+          console.log("Timeout reached");
+        },
+        endOfGame: function () {
+          alert("Fin");
+        },
+
+        correctAnswer: function () {
+          console.log("Correct!");
+        },
+
+        wrongAnswer: function () {
+          console.log("Wrong!");
+        }
+
+      }
+      theGame.addHandler(consoleHandler);
+      theGame.addHandler(guiHandler);
+      theGame.start();
+    }
+  </script>
+</head>
+
+<body>
+  <div id="raphael_gui_operation"></div>
+  <form action="javascript:void(0);" onSubmit="return submitFunction()">
+    <input name="answer" type="text" id="answer">
+    <input type="submit" value="Submit">
+  </form>
+</body>
+
 </html>
