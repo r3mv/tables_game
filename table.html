@@ -2,19 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script src="raphael/raphael.js"></script>
-    <!-- <script src="lib/raphael.min.js"></script> -->
+    <!-- <script src="raphael/raphael.js"></script> -->
+    <script src="raphael.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="game.js"></script>
     <script src="gui.js"></script>
     <script>
-      window.onload = function () {
 
-        var paper = Raphael(0,0,100,100);
-        var font = paper.getFont("Times");
-
+   
+      // window.onload = function () {
        var guiHandler = new Gui("raphael_gui_operation");
-
         var consoleHandler = {
           newItem : function(item, operator) {
             console.log(item.x + ' ' + operator.displayString + ' ' + item.y);
@@ -35,8 +32,6 @@
           }
 
         }
-
-     
        var context = undefined;
        var level = Game.Levels.beginner;
        var theGame = new Game(level);
@@ -45,14 +40,12 @@
        theGame.start();
 
        var submitFunction = function() {
-         
          var ans = $("#answer").text();
+         console.log('SUBMIT FUNCTION');
          theGame.submitAnswer(ans);
-       }
-
-
-      
-      }
+         return false;
+    }
+      // }
       
     
     </script>
@@ -60,7 +53,7 @@
 
   <body>
     <div id="raphael_gui_operation"></div>
-    <form action="javascript:void(0);" submit="submitFunction()">
+    <form action="javascript:void(0);" onSubmit="return submitFunction()">
       <input name="answer" type="text" id="answer">
       <input type="submit" value="Submit">
     </form>

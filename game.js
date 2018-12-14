@@ -152,18 +152,26 @@ function Game(context) {
        this.loop();
     }
 
-    this.loop = function () {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    
+
+
+    this.loop = async function () {
         var item = this.nextItem();
         if (item !== undefined) {
             this.currentItem = item;
+            // set a tempo so that end of previous is properly notified
+            await sleep(1000);
             this.fireNewItem(item, this);
             if (this.currentTimeout !== null) {
-                console.log("Clearing timeout")
+                // console.log("Clearing timeout")
                 window.clearTimeout(this.currentTimeout);
                 this.currentTimeout = null;
             }
             this.currentTimeout = window.setTimeout(this.fireTimeout, this.responseDelay_ms, this);
-            console.log("Setting timeout for " + item + " to 1000 ms");
+            // console.log("Setting timeout for " + item + " to 1000 ms");
         } else {
             this.fireEndOfGame(this);
         }
