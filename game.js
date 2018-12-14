@@ -182,10 +182,10 @@ function Game(context) {
         if (answer === expected) {
             window.clearTimeout(this.currentTimeout);
             this.currentTimeout = null;
-            this.fireCorrectAnswer(this);
+            this.fireCorrectAnswer(this, expected);
             this.loop();
         } else {
-            this.fireWrongAnswer(this); // shift item, or let it go to the end of timeout ?? Or let it be handled by a game parameter
+            this.fireWrongAnswer(this, answer); // shift item, or let it go to the end of timeout ?? Or let it be handled by a game parameter
         }
     }
 
@@ -226,20 +226,20 @@ function Game(context) {
         });
     }
 
-    this.fireCorrectAnswer = function (thisObj) {
+    this.fireCorrectAnswer = function (thisObj, ans) {
         var scope = thisObj || window;
         scope.handlers.forEach(function (handler) {
             if (handler.correctAnswer !== undefined) {
-                handler.correctAnswer.call(handler);
+                handler.correctAnswer.call(handler, ans);
             }
         });
     }
 
-    this.fireWrongAnswer = function (thisObj) {
+    this.fireWrongAnswer = function (thisObj, ans) {
         var scope = thisObj || window;
         scope.handlers.forEach(function (handler) {
             if (handler.wrongAnswer !== undefined) {
-                handler.wrongAnswer.call(handler);
+                handler.wrongAnswer.call(handler, ans);
             }
         });
     }

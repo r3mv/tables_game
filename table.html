@@ -9,14 +9,14 @@
   <script src="game.js"></script>
   <script src="gui.js"></script>
   <script src="sui.js"></script>
-  <link rel="stylesheet" href="demo.css" media="screen">
+  <link rel="stylesheet" href="styles/demo.css" media="screen">
   <script>
 
     var context = undefined;
     var level = Game.Levels.beginner;
     var theGame = new Game(level);
     var submitFunction = function () {
-      var ans = parseInt($("#answer").val(),10);
+      var ans = parseInt($("#answer").val(), 10);
       console.log('SUBMIT FUNCTION');
       theGame.submitAnswer(ans);
       $("#answer").val('');
@@ -56,10 +56,10 @@
 </head>
 
 <body>
+
   <div id="raphael_gui_operation"></div>
   <form action="javascript:void(0);" onSubmit="return submitFunction()">
     <input name="answer" type="text" id="answer">
-    <!-- <input type="submit" value="Submit"> -->
   </form>
 </body>
 

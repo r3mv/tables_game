@@ -15,7 +15,7 @@ function Gui(operationDiv, resultDiv) {
         if (this.textTimeout !== null) {
             this.textTimeout.attr('text', '');
         }
-        var text = '' + item.x + operator.displayString + item.y/* + '=' + operator.apply(item.x,item.y)*/;
+        var text = item.x + ' ' + operator.displayString + ' ' + item.y + ' = '/* + operator.apply(item.x,item.y)*/;
         if (this.rtext === undefined) {
             this.rtext = this.operationPaper.text(100,100, text);
         } else {
@@ -24,12 +24,14 @@ function Gui(operationDiv, resultDiv) {
         this.rtext.attr(attr);
      }
 
-     this.correctAnswer = function() {
-         this.rtext.attr({fill: '#0f0'});
+     this.correctAnswer = function(ans) {
+         var text = this.rtext.attrs.text + ans; 
+         this.rtext.attr({fill: '#0f0', 'text': text});
      }
 
-     this.wrongAnswer = function() {
-         this.rtext.attr({fill: '#f00'});
+     this.wrongAnswer = function(ans) {
+        var text = this.rtext.attrs.text + ans; 
+        this.rtext.attr({fill: '#f00', text : text});
      }
 
      this.hasTimedOut = function() {
