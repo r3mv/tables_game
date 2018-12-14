@@ -8,6 +8,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="game.js"></script>
   <script src="gui.js"></script>
+  <script src="sui.js"></script>
+  <link rel="stylesheet" href="demo.css" media="screen">
   <script>
 
     var context = undefined;
@@ -17,12 +19,14 @@
       var ans = parseInt($("#answer").val(),10);
       console.log('SUBMIT FUNCTION');
       theGame.submitAnswer(ans);
+      $("#answer").val('');
       return false;
     }
 
 
     window.onload = function () {
       var guiHandler = new Gui("raphael_gui_operation");
+      var suiHandler = new Sui();
       var consoleHandler = {
         newItem: function (item, operator) {
           console.log(item.x + ' ' + operator.displayString + ' ' + item.y);
@@ -45,6 +49,7 @@
       }
       theGame.addHandler(consoleHandler);
       theGame.addHandler(guiHandler);
+      theGame.addHandler(suiHandler);
       theGame.start();
     }
   </script>
@@ -54,7 +59,7 @@
   <div id="raphael_gui_operation"></div>
   <form action="javascript:void(0);" onSubmit="return submitFunction()">
     <input name="answer" type="text" id="answer">
-    <input type="submit" value="Submit">
+    <!-- <input type="submit" value="Submit"> -->
   </form>
 </body>
 

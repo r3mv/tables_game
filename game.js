@@ -10,43 +10,43 @@ Game.Levels = Object.freeze({ "beginner": 1, "medium": 2, "expert": 3, "computer
 Game.Operators = Object.freeze({
     addition: {
         displayString: "+",
-        apply : function(x, y) {
+        apply: function (x, y) {
             return x + y;
         }
     },
     substraction: {
         displayString: "-",
-        apply : function(x, y) {
+        apply: function (x, y) {
             return x - y;
         }
     },
     multiplication: {
         displayString: "x",
-        apply : function(x, y) {
-            return x*y;
+        apply: function (x, y) {
+            return x * y;
         }
     },
     division: {
         displayString: "/",
-        apply : function(x,y) {
-            return x/y;
+        apply: function (x, y) {
+            return x / y;
         }
     }
 }
 );
 
 function Game(context) {
-   
-    this.nextItemOrdered = function() {
+
+    this.nextItemOrdered = function () {
         return this.items.pop();
     }
 
-    this.nextFromRandomTable = function() {
+    this.nextFromRandomTable = function () {
         // todo
         return this.items.pop();
     }
 
-    this.nextItemRandom = function() {
+    this.nextItemRandom = function () {
         // todo
         return this.item.pop();
     }
@@ -54,24 +54,24 @@ function Game(context) {
     this.tables = context.tables || [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     this.operator = context.operator || Game.Operators.multiplication;
     this.max = context.max || 10;
-    this.responseDelay_ms = context.responseDelay_ms || 3000 ;
+    this.responseDelay_ms = context.responseDelay_ms || 3000;
     this.nextItem = context.nextItem || this.nextItemOrdered;
     this.handlers = [];
     this.items = [];
     this.currentTimeout = null;
 
 
-    this.initItems = function() {
+    this.initItems = function () {
         console.log(this.tables);
         var array = [];
-        for (var i = this.tables.length-1; i >=0; --i) {
+        for (var i = this.tables.length - 1; i >= 0; --i) {
             var xVal = this.tables[i];
-            for (var yVal = this.max; yVal > 0 ; yVal--) {
-                array.push({x : xVal, y : yVal});
+            for (var yVal = this.max; yVal > 0; yVal--) {
+                array.push({ x: xVal, y: yVal });
             }
         }
         return array;
-     }
+    }
 
     this.setOperator = function (operator) {
         this.operator = operator;
@@ -94,34 +94,34 @@ function Game(context) {
         var context = {};
         switch (level) {
             case 1:
-            context.tables = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            context.max = 10;
-            context.nextItem = this.nextItemOrdered;
-            context.responseDelay_ms = 20000;
-            break;
+                context.tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                context.max = 10;
+                context.nextItem = this.nextItemOrdered;
+                context.responseDelay_ms = 20000;
+                break;
             case 2:
-            context.tables = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            context.max = 10;
-            context.nextItem = this.nextFromRandomTable;
-            context.responseDelay_ms = 10000;
-            break;
+                context.tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                context.max = 10;
+                context.nextItem = this.nextFromRandomTable;
+                context.responseDelay_ms = 10000;
+                break;
             case 3:
-            context.tables = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            context.max = 12;
-            context.nextItem = this.nextFromRandomTable;
-            context.responseDelay_ms = 5000;
-            break;
+                context.tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                context.max = 12;
+                context.nextItem = this.nextFromRandomTable;
+                context.responseDelay_ms = 5000;
+                break;
             case 4:
-            context.tables = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-            context.max = 12;
-            context.nextItem = this.nextItemRandom;
-            context.responseDelay_ms = 1000;
-            break;
+                context.tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+                context.max = 12;
+                context.nextItem = this.nextItemRandom;
+                context.responseDelay_ms = 1000;
+                break;
         }
         return context;
     }
 
-  
+
     /*
     * Add a GUI game handler, i.e. a component with callback functions
     * that can be called from this game to display the current game
@@ -148,14 +148,14 @@ function Game(context) {
     }
 
     this.start = function () {
-       this.items = this.initItems();
-       this.loop();
+        this.items = this.initItems();
+        this.loop();
     }
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
-      }
-    
+    }
+
 
 
     this.loop = async function () {
@@ -177,18 +177,19 @@ function Game(context) {
         }
     }
 
-    this.submitAnswer = function(answer) {
+    this.submitAnswer = function (answer) {
         var expected = this.operator.apply(this.currentItem.x, this.currentItem.y);
         if (answer === expected) {
             window.clearTimeout(this.currentTimeout);
             this.currentTimeout = null;
             this.fireCorrectAnswer(this);
+            this.loop();
         } else {
             this.fireWrongAnswer(this); // shift item, or let it go to the end of timeout ?? Or let it be handled by a game parameter
         }
     }
 
-    this.resetTimeout = function() {
+    this.resetTimeout = function () {
 
     }
 
@@ -206,7 +207,7 @@ function Game(context) {
         scope.handlers.forEach(function (handler) {
             var scope = thisObj || window;
             if (handler.hasTimedOut !== undefined) {
-                handler.hasTimedOut.call(scope);
+                handler.hasTimedOut.call(handler);
 
             }
         });
@@ -215,7 +216,7 @@ function Game(context) {
         scope.loop();
     }
 
-    this.fireEndOfGame = function(thisObj) {
+    this.fireEndOfGame = function (thisObj) {
         var scope = thisObj || window.top;
         scope.handlers.forEach(function (handler) {
             var scope = thisObj || window;
@@ -225,7 +226,7 @@ function Game(context) {
         });
     }
 
-    this.fireCorrectAnswer = function(thisObj) {
+    this.fireCorrectAnswer = function (thisObj) {
         var scope = thisObj || window;
         scope.handlers.forEach(function (handler) {
             if (handler.correctAnswer !== undefined) {
@@ -234,7 +235,7 @@ function Game(context) {
         });
     }
 
-    this.fireWrongAnswer = function(thisObj) {
+    this.fireWrongAnswer = function (thisObj) {
         var scope = thisObj || window;
         scope.handlers.forEach(function (handler) {
             if (handler.wrongAnswer !== undefined) {
